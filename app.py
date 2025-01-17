@@ -81,36 +81,48 @@ with tab2:
     has_credit_card = st.checkbox('💳Has Credit Card',[0,1])
     is_active_member = st.checkbox('😎Is Active Member',[0,1]) 
 
+    st.markdown("---")
 
-    if st.button('Predict'):
+    col1, col2, col3 , col4, col5 = st.columns(5)
+
+    with col1:
+        pass
+    with col2:
+        pass
+    with col4:
+        pass
+    with col5:
+        pass
+    with col3 :
+        if st.button('Predict'):
 
 
-        input_data = pd.DataFrame({
-            'CreditScore': [credit_score],
-            'Gender':[label_encoder_gender.transform([gender])[0]],
-            'Age': [age],
-            'Tenure': [tenure],
-            'Balance': [balance],
-            'NumOfProducts': [num_of_products],
-            'HasCrCard': [has_credit_card],
-            'IsActiveMember': [is_active_member],
-            'EstimatedSalary': [estimated_salary]
-        })
+            input_data = pd.DataFrame({
+                'CreditScore': [credit_score],
+                'Gender':[label_encoder_gender.transform([gender])[0]],
+                'Age': [age],
+                'Tenure': [tenure],
+                'Balance': [balance],
+                'NumOfProducts': [num_of_products],
+                'HasCrCard': [has_credit_card],
+                'IsActiveMember': [is_active_member],
+                'EstimatedSalary': [estimated_salary]
+            })
 
-        geo_encoded = encoder.transform([[geography]]).toarray()
-        geo_encoded_df = pd.DataFrame(geo_encoded, columns = encoder.get_feature_names_out(['Geography']))
+            geo_encoded = encoder.transform([[geography]]).toarray()
+            geo_encoded_df = pd.DataFrame(geo_encoded, columns = encoder.get_feature_names_out(['Geography']))
 
-        input_data = pd.concat([input_data.reset_index(drop=True),geo_encoded_df],axis=1)
+            input_data = pd.concat([input_data.reset_index(drop=True),geo_encoded_df],axis=1)
 
-        input_data_scaled = scaler.transform(input_data)
+            input_data_scaled = scaler.transform(input_data)
 
-        prediction = model.predict(input_data_scaled)
-        prediction_probablity = prediction[0][0]
+            prediction = model.predict(input_data_scaled)
+            prediction_probablity = prediction[0][0]
 
-        st.write('Prediction:', prediction_probablity)
+            st.write('Prediction:', prediction_probablity)
 
-        if prediction_probablity > 0.5:
-            st.error('Customer is likely to churn')
-        else:
-            st.success('Customer is not likely to churn')
+            if prediction_probablity > 0.5:
+                st.error('Customer is likely to churn')
+            else:
+                st.success('Customer is not likely to churn')
 
